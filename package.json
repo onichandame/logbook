@@ -1,0 +1,39 @@
+{
+  "name": "@onichandame/logbook",
+  "private": true,
+  "version": "0.0.0",
+  "description": "logbook for everyday",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install",
+    "format": "pretty-quick --staged"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onichandame/logbook.git"
+  },
+  "keywords": [
+    "nestjs",
+    "react"
+  ],
+  "author": "onichandame",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/onichandame/logbook/issues"
+  },
+  "homepage": "https://github.com/onichandame/logbook#readme",
+  "devDependencies": {
+    "husky": "^6.0.0",
+    "lerna": "^4.0.0",
+    "prettier": "^2.3.1",
+    "pretty-quick": "^3.1.1"
+  }
+}

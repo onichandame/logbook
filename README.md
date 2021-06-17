@@ -1,2 +1,0 @@
-# logbook
-logs every chore

@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.0.0",
+  "description": "backend",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "nest start --watch --preserveWatchOutput",
+    "test": "jest"
+  },
+  "author": "onichandame",
+  "license": "MIT",
+  "dependencies": {
+    "@nestjs/common": "^7.6.18",
+    "@nestjs/config": "^0.6.3",
+    "@nestjs/core": "^7.6.18",
+    "@nestjs/platform-express": "^7.6.18",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.1.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^7.6.0"
+  }
+}

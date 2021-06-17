@@ -1,15 +1,30 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
+*/run
+*/logs
+**/*.js
+**/*.jsc
+**/typings/app
+**/typings/config
+server-op/app/public
 
-# Test binary, built with `go test -c`
-*.test
+.env*
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+.DS_Store
+.vscode
+.github
+.travis.yml
+appveyor.yml
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+package-lock.json
+
+node_modules
+coverage
+swagger.json
+yarn-error.log
+
+yarn.lock
+
+.yarn*
+core.*
+lerna-debug.log
+
+dist
