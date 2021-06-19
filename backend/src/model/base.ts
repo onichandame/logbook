@@ -1,18 +1,18 @@
+import { v1 as createUid } from "uuid";
 import {
+  BeforeInsert,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  Entity,
   PrimaryGeneratedColumn
 } from "typeorm";
 
-@Entity()
 export abstract class Base {
   @PrimaryGeneratedColumn()
   id!: number;
 }
 
-@Entity()
 export abstract class Timestamp extends Base {
   @UpdateDateColumn()
   updatedAt!: Date;
@@ -20,8 +20,17 @@ export abstract class Timestamp extends Base {
   createdAt!: Date;
 }
 
-@Entity()
 export abstract class Persistent extends Timestamp {
   @DeleteDateColumn()
   deletedAt!: Date;
+}
+
+export abstract class Universal extends Persistent {
+  @Column({ unique: true })
+  uuid!: string;
+
+  @BeforeInsert()
+  createUuid() {
+    this.uuid = createUid();
+  }
 }

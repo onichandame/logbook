@@ -11,21 +11,27 @@
   "author": "onichandame",
   "license": "MIT",
   "dependencies": {
+    "@nestjs-query/query-typeorm": "^0.27.0",
     "@nestjs/common": "^7.6.18",
     "@nestjs/config": "^0.6.3",
     "@nestjs/core": "^7.6.18",
     "@nestjs/platform-express": "^7.6.18",
     "@nestjs/typeorm": "^7.1.5",
+    "bcryptjs": "^2.4.3",
+    "class-transformer": "^0.4.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.1.0",
     "sqlite3": "^5.0.2",
-    "typeorm": "^0.2.34"
+    "typeorm": "^0.2.34",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@jest/types": "^27.0.2",
     "@nestjs/cli": "^7.6.0",
     "@nestjs/testing": "^7.6.18",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^26.0.23",
+    "@types/uuid": "^8.3.0",
     "jest": "^27.0.4",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0"

@@ -10,14 +10,16 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       useFactory: async (config: ConfigService) => {
         const isUnittest = () =>
           config.get<string>(`NODE_ENV`)?.includes(`test`);
-        let database = config.get<string>(`DATABASE`);
-        if (!database)
-          if (isUnittest()) database = `:memory:`;
-          else
-            throw new Error(
-              `database not specified! Make sure env DATABASE is set to the path of the database file!`
-            );
-        else database += `_v${config.get<number>(`database.sqlite.revision`)}`;
+        let database: string;
+        if (isUnittest()) database = `:memory:`;
+        else if (!config.get<string>(`DATABASE`))
+          throw new Error(
+            `database not specified! Make sure env DATABASE is set to the path of the database file!`
+          );
+        else
+          database = `${config.get<string>(`DATABASE`)}_v${config.get<number>(
+            `database.sqlite.revision`
+          )}`;
         return {
           synchronize: isUnittest() ? true : false,
           dropSchema: isUnittest() ? true : false,
