@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "../config";
+import { ConfigModule, ConfigService } from "@backend/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 @Module({

@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm";
 import { TypeOrmModule, getEntityManagerToken } from "@nestjs/typeorm";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { SqliteModule } from "../db-connection";
+import { SqliteModule } from "@backend/db-connection";
 
 export class TestModule {
   public module?: TestingModule;
