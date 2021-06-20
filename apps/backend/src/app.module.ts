@@ -1,7 +1,14 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@backend/config";
+import { GraphQLModule } from "@nestjs/graphql";
+import { ModelModule } from "@libs/model";
 
-import { SqliteModule } from "@backend/db-connection";
+import { CrudModule } from "./crud";
 
-@Module({ imports: [SqliteModule, ConfigModule] })
+@Module({
+  imports: [
+    ModelModule,
+    GraphQLModule.forRoot({ autoSchemaFile: true }),
+    CrudModule
+  ]
+})
 export class AppModule {}

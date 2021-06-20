@@ -2,7 +2,7 @@ import { EntityManager } from "typeorm";
 import { TypeOrmModule, getEntityManagerToken } from "@nestjs/typeorm";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { SqliteModule } from "@backend/db-connection";
+import { ConnectionModule } from "./connection";
 
 export class TestModule {
   public module?: TestingModule;
@@ -11,7 +11,7 @@ export class TestModule {
   static async createBare(args: { imports?: any[]; providers?: any[] }) {
     const instance = new this();
     instance.module = await Test.createTestingModule({
-      imports: [SqliteModule, ...(args.imports || [])],
+      imports: [ConnectionModule, ...(args.imports || [])],
       providers: [...(args.providers || [])]
     }).compile();
     await instance.module?.init();

@@ -8,7 +8,13 @@
     "apps/*"
   ],
   "scripts": {
-    "test": "jest",
+    "build:libs": "lerna --scope @libs/* run build",
+    "test:libs": "lerna --scope @libs/* run test",
+    "pretest:apps": "npm run build:libs",
+    "test:apps": "lerna --scope @apps/* run test",
+    "pretest": "npm run build:libs",
+    "test": "lerna run test",
+    "dev:backend": "lerna --scope @apps/backend run dev",
     "prepare": "husky install",
     "format": "pretty-quick --staged"
   },
@@ -42,5 +48,6 @@
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.4"
-  }
+  },
+  "dependencies": {}
 }

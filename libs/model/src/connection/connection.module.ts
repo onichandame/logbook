@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@backend/config";
+import { ConfigModule, ConfigService } from "@libs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+
+import * as Migrations from "./migration";
 
 @Module({
   imports: [
@@ -21,8 +23,10 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             `database.sqlite.revision`
           )}`;
         return {
-          synchronize: isUnittest() ? true : false,
-          dropSchema: isUnittest() ? true : false,
+          migrationsRun: true,
+          migrations: Object.values(Migrations),
+          synchronize: isUnittest(),
+          dropSchema: isUnittest(),
           type: `sqlite`,
           database,
           autoLoadEntities: true
@@ -31,4 +35,4 @@ import { TypeOrmModule } from "@nestjs/typeorm";
     })
   ]
 })
-export class SqliteModule {}
+export class ConnectionModule {}

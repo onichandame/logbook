@@ -1,15 +1,27 @@
 import { BeforeInsert, BeforeUpdate, ManyToOne, Entity, Column } from "typeorm";
+import {
+  FilterableField,
+  FilterableRelation
+} from "@nestjs-query/query-graphql";
+import { ID, ObjectType } from "@nestjs/graphql";
 import { hash, compare } from "bcryptjs";
 
 import { Persistent } from "./base";
 import { User } from "./user";
 
-abstract class Credential extends Persistent {
+@FilterableRelation(`user`, () => User, {
+  disableRemove: true,
+  disableUpdate: true
+})
+@ObjectType({ isAbstract: true })
+class Credential extends Persistent {
+  @FilterableField(() => ID)
   @ManyToOne(() => User, user => user.id)
   user!: User;
 }
 
-@Entity()
+@ObjectType()
+@Entity({ name: `local_credential` })
 export class LocalCredential extends Credential {
   @Column()
   password!: string;

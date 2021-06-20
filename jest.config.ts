@@ -5,7 +5,6 @@ export default {
   testEnvironment: `node`,
   verbose: true,
   testTimeout: 1000 * 60,
-  testPathIgnorePatterns: [`dist/*`],
   rootDir: ".",
-  projects: [`<rootDir>/libs/*`]
+  projects: [`<rootDir>/apps/*`, `<rootDir>/libs/*`]
 } as Config.InitialOptions;

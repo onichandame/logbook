@@ -1,0 +1,26 @@
+{
+  "name": "@libs/model",
+  "version": "0.0.0",
+  "description": "db models",
+  "main": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -p ./tsconfig.build.json"
+  },
+  "author": "onichandame",
+  "license": "MIT",
+  "peerDependencies": {
+    "@nestjs-query/query-graphql": "^0.27.0",
+    "@nestjs/graphql": "^7.11.0",
+    "@nestjs/typeorm": "^7.1.5"
+  },
+  "devDependencies": {
+    "@nestjs/typeorm": "^7.1.5"
+  },
+  "dependencies": {
+    "@libs/config": "^0.0.0"
+  }
+}
