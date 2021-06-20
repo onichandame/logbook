@@ -2,12 +2,19 @@ import { Module } from "@nestjs/common";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ModelModule } from "@libs/model";
 
+import { RawContext, Context } from "./types";
+
 import { CrudModule } from "./crud";
 
 @Module({
   imports: [
     ModelModule,
-    GraphQLModule.forRoot({ autoSchemaFile: true }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      context: (ctx: RawContext): Context => {
+        return { ...ctx };
+      }
+    }),
     CrudModule
   ]
 })

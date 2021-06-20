@@ -8,19 +8,29 @@ export class TestModule {
   public module?: TestingModule;
   private _em?: EntityManager;
 
-  static async createBare(args: { imports?: any[]; providers?: any[] }) {
+  static async createBare(args: {
+    synchronize?: boolean;
+    imports?: any[];
+    providers?: any[];
+  }) {
     const instance = new this();
     instance.module = await Test.createTestingModule({
-      imports: [ConnectionModule, ...(args.imports || [])],
+      imports: [
+        ConnectionModule.forRoot({ synchronize: args.synchronize }),
+        ...(args.imports || [])
+      ],
       providers: [...(args.providers || [])]
     }).compile();
     await instance.module?.init();
     return instance;
   }
+
   static async create(args: {
     entities: Parameters<typeof TypeOrmModule["forFeature"]>[0];
+    synchronize?: boolean;
   }) {
     const instance = await this.createBare({
+      synchronize: args.synchronize,
       imports: [TypeOrmModule.forFeature(args.entities)]
     });
     instance._em = instance.module?.get<EntityManager>(getEntityManagerToken());

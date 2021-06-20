@@ -31,6 +31,7 @@ describe(__filename, () => {
   let testMod: TestModule;
   beforeAll(async () => {
     testMod = await TestModule.create({
+      synchronize: true,
       entities: [TestBase, TestTimestamp, TestPersistent, TestUniversal]
     });
   });

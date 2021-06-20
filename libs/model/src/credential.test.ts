@@ -6,7 +6,10 @@ describe(__filename, () => {
   let testMod: TestModule;
   let user: User;
   beforeAll(async () => {
-    testMod = await TestModule.create({ entities: [User, LocalCredential] });
+    testMod = await TestModule.create({
+      synchronize: true,
+      entities: [User, LocalCredential]
+    });
     user = await testMod.em.save(
       testMod.em.create(User, { name: createRandomStr() })
     );
