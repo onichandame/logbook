@@ -16,6 +16,8 @@ const logger = new Logger(__filename);
 const bootstrap = async () => {
   const app = await NestFactory.create(RootModule.forRoot(AppModule));
   const config = app.get(ConfigService);
+
+  // start on port
   const port = config.get<string>(`PORT`) || 80;
   await app.listen(port);
   logger.log(`listening on port ${port}`);

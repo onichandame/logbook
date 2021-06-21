@@ -5,6 +5,9 @@ import { ConnectionModule } from "./connection";
 import * as Models from "./models";
 
 @Module({
-  imports: [ConnectionModule, TypeOrmModule.forFeature(Object.values(Models))]
+  imports: [
+    ConnectionModule.forRoot(),
+    TypeOrmModule.forFeature(Object.values(Models))
+  ]
 })
 export class ModelModule {}
