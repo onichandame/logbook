@@ -15,8 +15,9 @@
     "pretest": "npm run build:libs",
     "test": "lerna run test",
     "dev:proxy": "cross-env PORT=3000 cross-env BACKEND_PORT=3002 cross-env FRONTEND_PORT=3001 lerna --scope @apps/proxy run dev",
+    "dev:frontend": "cross-env PORT=3001 lerna --scope @apps/frontend run dev",
     "dev:backend": "cross-env PORT=3002 lerna --scope @apps/backend run dev",
-    "dev": "concurrently \"npm run dev:proxy\" \"npm run dev:backend\"",
+    "dev": "concurrently \"npm run dev:proxy\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "prepare": "husky install",
     "format": "pretty-quick --staged"
   },
