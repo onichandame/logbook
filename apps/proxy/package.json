@@ -1,0 +1,19 @@
+{
+  "name": "@apps/proxy",
+  "version": "0.0.0",
+  "description": "forward proxy in front of back/front-ends",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node ./src"
+  },
+  "author": "onichandame",
+  "license": "MIT",
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  },
+  "devDependencies": {
+    "@types/http-proxy": "^1.17.6",
+    "ts-node": "^10.0.0"
+  }
+}
