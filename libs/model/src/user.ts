@@ -1,5 +1,5 @@
 import { Entity, Column } from "typeorm";
-import { ObjectType } from "@nestjs/graphql";
+import { ObjectType, Field } from "@nestjs/graphql";
 import { FilterableField } from "@nestjs-query/query-graphql";
 
 import { Universal } from "./base";
@@ -14,4 +14,8 @@ export class User extends Universal {
   @FilterableField({ nullable: true })
   @Column({ nullable: true })
   email?: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  avatar?: string;
 }

@@ -1,0 +1,27 @@
+{
+  "name": "@libs/react",
+  "version": "0.0.0",
+  "description": "react stuff",
+  "main": "dist/index",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 3000 --quiet",
+    "build-storybook": "build-storybook"
+  },
+  "author": "onichandame",
+  "license": "MIT",
+  "dependencies": {
+    "@libs/model": "^0.0.0",
+    "@material-ui/core": "^4.11.4",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/react": "^6.2.9",
+    "babel-loader": "^8.2.2"
+  }
+}
