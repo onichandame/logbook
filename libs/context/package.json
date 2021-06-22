@@ -1,0 +1,16 @@
+{
+  "name": "@libs/context",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "author": "onichandame",
+  "license": "MIT",
+  "dependencies": {
+    "@libs/model": "^0.0.0",
+    "react": "^17.0.2"
+  }
+}

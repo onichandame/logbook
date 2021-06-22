@@ -19,8 +19,8 @@ export abstract class Base {
 
 @ObjectType({ isAbstract: true })
 export abstract class Timestamp extends Base {
-  @FilterableField(() => GraphQLISODateTime)
-  @UpdateDateColumn()
+  @FilterableField(() => GraphQLISODateTime, { nullable: true })
+  @UpdateDateColumn({ nullable: true })
   updatedAt!: Date;
   @FilterableField(() => GraphQLISODateTime)
   @CreateDateColumn()
@@ -29,8 +29,8 @@ export abstract class Timestamp extends Base {
 
 @ObjectType({ isAbstract: true })
 export abstract class Persistent extends Timestamp {
-  @FilterableField(() => GraphQLISODateTime)
-  @DeleteDateColumn()
+  @FilterableField(() => GraphQLISODateTime, { nullable: true })
+  @DeleteDateColumn({ nullable: true })
   deletedAt?: Date;
 }
 

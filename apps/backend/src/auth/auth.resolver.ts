@@ -1,4 +1,5 @@
 import {
+  Query,
   ObjectType,
   Field,
   Resolver,
@@ -6,6 +7,7 @@ import {
   InputType,
   Args
 } from "@nestjs/graphql";
+import { Models } from "@libs/model";
 
 import { AuthService } from "./auth.service";
 
@@ -39,5 +41,11 @@ export class AuthResolver {
         email: user.email
       })
     } as LoginOutput;
+  }
+
+  @Query(() => Models.User)
+  async verifySession(@Args(`session`) session: string) {
+    const sess = await this.svc.validateSession(session);
+    return await this.svc.deserializeUser(sess.uid);
   }
 }
