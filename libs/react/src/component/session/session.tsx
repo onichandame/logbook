@@ -1,9 +1,12 @@
-import React, { FC, useEffect, useContext } from "react";
+import React, { FC, useState, useEffect, useContext } from "react";
+import { useSnackbar, SnackbarKey } from "notistack";
 import { useLazyQuery } from "@apollo/client";
 import { VERIFY_SESSION_SCHEMA } from "@libs/gql";
 import { UserContext, SessionContext } from "@libs/context";
 
 export const Session: FC = () => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loadingToast, setLoadingToast] = useState<null | SnackbarKey>(null);
   const [sess] = useContext(SessionContext);
   const [, setUser] = useContext(UserContext);
   const [query, { loading, data, error }] = useLazyQuery(VERIFY_SESSION_SCHEMA);
@@ -15,8 +18,15 @@ export const Session: FC = () => {
     }
   }, [sess]);
   useEffect(() => {
-    if (data) setUser(data.verifySession);
-    if (error) console.log(error);
+    if (data)
+      enqueueSnackbar(`logged in!`, { variant: `success` }) &&
+        setUser(data.verifySession);
+    else if (error)
+      enqueueSnackbar(error.message, { variant: `error` }) && setUser(null);
   }, [data, error]);
-  return <div>{loading && `loading`}</div>;
+  useEffect(() => {
+    if (loading) setLoadingToast(enqueueSnackbar(`loggin in`));
+    else loadingToast && closeSnackbar(loadingToast);
+  }, [loading]);
+  return <div></div>;
 };

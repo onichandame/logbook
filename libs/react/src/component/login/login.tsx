@@ -2,6 +2,8 @@ import React, { useEffect, useContext, FC } from "react";
 import { LOGIN_SCHEMA } from "@libs/gql";
 import { useMutation } from "@apollo/client";
 import {
+  FormControl,
+  FormHelperText,
   TextField,
   Dialog,
   DialogTitle,
@@ -16,7 +18,7 @@ import { SessionContext } from "@libs/context";
 export const Login: FC<{ open: boolean; onClose: () => void }> = args => {
   const [, setSess] = useContext(SessionContext);
 
-  const [login, { data }] = useMutation(LOGIN_SCHEMA);
+  const [login, { data, error }] = useMutation(LOGIN_SCHEMA);
   const schema = yup
     .object()
     .required()
@@ -44,6 +46,7 @@ export const Login: FC<{ open: boolean; onClose: () => void }> = args => {
         <TextField
           name="nameOrEmail"
           fullWidth
+          error={!!error}
           placeholder="Username or Email"
           value={formik.values.nameOrEmail}
           type="text"
@@ -53,12 +56,18 @@ export const Login: FC<{ open: boolean; onClose: () => void }> = args => {
         <TextField
           name="password"
           fullWidth
+          error={!!error}
           placeholder="password"
           value={formik.values.password}
           type="password"
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
+        {!!error && (
+          <FormControl error>
+            <FormHelperText>error: {error?.message}</FormHelperText>
+          </FormControl>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={args.onClose} disabled={formik.isSubmitting}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { SnackbarProvider } from "notistack";
 import { Button } from "@material-ui/core";
 import { Story, Meta } from "@storybook/react";
 import { SessionContext, UserContext, StateContextType } from "@libs/context";
@@ -16,17 +17,19 @@ const Template: Story = () => {
     console.log(userState[0]);
   }, [userState[0]]);
   return (
-    <SessionContext.Provider value={sessState}>
-      <UserContext.Provider value={userState}>
-        <Session />
-        <Button onClick={trigger}>login</Button>
-        <Button onClick={reset}>logout</Button>
-        {userState[0] &&
-          Object.keys(userState[0]).map(k => (
-            <div>{`${k}: ${(userState[0] as any)[k]}`}</div>
-          ))}
-      </UserContext.Provider>
-    </SessionContext.Provider>
+    <SnackbarProvider>
+      <SessionContext.Provider value={sessState}>
+        <UserContext.Provider value={userState}>
+          <Session />
+          <Button onClick={trigger}>login</Button>
+          <Button onClick={reset}>logout</Button>
+          {userState[0] &&
+            Object.keys(userState[0]).map(k => (
+              <div key={k}>{`${k}: ${(userState[0] as any)[k]}`}</div>
+            ))}
+        </UserContext.Provider>
+      </SessionContext.Provider>
+    </SnackbarProvider>
   );
 };
 
