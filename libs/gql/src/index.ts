@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const LOGIN_SCHEMA = gql`
-  mutation Login($nameOrEmail: String!, $password: String!) {
+  mutation login($nameOrEmail: String!, $password: String!) {
     loginLocal(input: { nameOrEmail: $nameOrEmail, password: $password }) {
       session
     }

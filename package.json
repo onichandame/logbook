@@ -17,6 +17,7 @@
     "dev:proxy": "lerna --scope @apps/proxy run dev",
     "dev:frontend": "lerna --scope @apps/frontend run dev",
     "dev:backend": "lerna --scope @apps/backend run dev",
+    "predev": "npm run build:libs",
     "dev": "concurrently \"cross-env PORT=3000 cross-env BACKEND_PORT=3002 cross-env FRONTEND_PORT=3001 npm run dev:proxy\" \"cross-env PORT=3002 npm run dev:backend\" \"cross-env PORT=3001 npm run dev:frontend\"",
     "prepare": "husky install",
     "format": "pretty-quick --staged"

@@ -1,7 +1,8 @@
-import React, { useEffect, useContext, FC } from "react";
-import { State } from "@libs/context";
-import { LOGIN_SCHEMA } from "@libs/gql";
+import React, { FC } from "react";
 import { useMutation } from "@apollo/client";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { State } from "@libs/context";
 import {
   FormControl,
   FormHelperText,
@@ -12,66 +13,46 @@ import {
   DialogActions,
   Button
 } from "@material-ui/core";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { SessionContext } from "@libs/context";
 
-export const Login: FC<{ open: State<boolean> }> = ({
+export const Register: FC<{ open: State<boolean> }> = ({
   open: [open, setOpen]
 }) => {
-  const [, setSess] = useContext(SessionContext);
-
-  const [login, { data, error }] = useMutation(LOGIN_SCHEMA);
   const schema = yup
     .object()
     .required()
     .shape({
-      nameOrEmail: yup.string().default(``).required(),
-      password: yup.string().default(``).required()
+      name: yup.string().required().label(`username`).default(``),
+      email: yup.string().email().notRequired().default(``)
     });
   const formik = useFormik({
     validationSchema: schema,
     initialValues: schema.getDefault(),
-    onSubmit: async (vals, helpers) => {
+    onSubmit: (vals, helpers) => {
       helpers.setSubmitting(true);
-      await login({ variables: vals });
       helpers.setSubmitting(false);
     }
   });
-  useEffect(() => {
-    if (data) console.log(data);
-    if (data) setSess(data.session);
-  }, [data]);
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Login</DialogTitle>
+      <DialogTitle>Register Yourself</DialogTitle>
       <form>
         <DialogContent>
           <TextField
-            name="nameOrEmail"
+            name="name"
             fullWidth
-            error={!!error}
-            placeholder="Username or Email"
-            value={formik.values.nameOrEmail}
+            placeholder="username"
             type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
           <TextField
-            name="password"
+            name="email"
             fullWidth
-            error={!!error}
-            placeholder="password"
-            value={formik.values.password}
-            type="password"
+            placeholder="email"
+            type="email"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          {!!error && (
-            <FormControl error>
-              <FormHelperText>error: {error?.message}</FormHelperText>
-            </FormControl>
-          )}
         </DialogContent>
         <DialogActions>
           <Button
@@ -89,9 +70,9 @@ export const Login: FC<{ open: State<boolean> }> = ({
             }}
             disabled={formik.isSubmitting}
             variant="contained"
-            color="primary"
+            color="secondary"
           >
-            login
+            register
           </Button>
         </DialogActions>
       </form>

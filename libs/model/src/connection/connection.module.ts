@@ -1,4 +1,5 @@
 import { Module, DynamicModule } from "@nestjs/common";
+import { basename, join, extname, dirname } from "path";
 import { ConfigModule, ConfigService } from "@libs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
@@ -16,16 +17,14 @@ export class ConnectionModule {
           useFactory: async (config: ConfigService) => {
             const isUnittest = () =>
               config.get<string>(`NODE_ENV`)?.includes(`test`);
-            let database: string;
+            let database = config.get<string>(`DATABASE`);
+            const dbRevision = config.get<number>(`database.sqlite.revision`);
             if (isUnittest()) database = `:memory:`;
-            else if (!config.get<string>(`DATABASE`))
+            else if (!database)
               throw new Error(
                 `database not specified! Make sure env DATABASE is set to the path of the database file!`
               );
-            else
-              database = `${config.get<string>(
-                `DATABASE`
-              )}_v${config.get<number>(`database.sqlite.revision`)}`;
+            else database = this.parseDbPath(database, dbRevision);
             return {
               migrationsRun: !args?.synchronize,
               migrations: !args?.synchronize
@@ -41,5 +40,12 @@ export class ConnectionModule {
         })
       ]
     };
+  }
+
+  static parseDbPath(raw: string, version = 0) {
+    const dir = dirname(raw);
+    const ext = extname(raw);
+    let filename = basename(raw).split(`.`).slice(0, -1).join(`.`);
+    return join(dir, `${filename}_v${version}${ext}`);
   }
 }

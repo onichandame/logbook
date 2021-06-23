@@ -2,14 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { CssBaseline } from "@material-ui/core";
 
+import { Provider } from "./components";
 import { App } from "./app";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CssBaseline />
-    <App />
-  </React.StrictMode>,
+  <Provider>
+    <React.StrictMode>
+      <CssBaseline />
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById("root")
 );
 

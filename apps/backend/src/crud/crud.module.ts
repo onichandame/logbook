@@ -3,6 +3,8 @@ import { NestjsQueryTypeOrmModule } from "@nestjs-query/query-typeorm";
 import { Module } from "@nestjs/common";
 import { Models } from "@libs/model";
 
+import { UserCreate, UserUpdate } from "./dto";
+
 @Module({
   imports: [
     NestjsQueryGraphQLModule.forFeature({
@@ -11,6 +13,8 @@ import { Models } from "@libs/model";
         {
           EntityClass: Models.User,
           DTOClass: Models.User,
+          CreateDTOClass: UserCreate,
+          UpdateDTOClass: UserUpdate,
           delete: { disabled: true }
         },
         {
