@@ -1,5 +1,5 @@
 import { FC, useContext } from "react";
-import { AuthContext } from "@libs/react";
+import { SessionContext } from "@libs/context";
 import { Menu } from "@material-ui/core";
 
 import { DropdownAnchor, DropdownId } from "../context";
@@ -10,9 +10,9 @@ import { LoggedIn } from "./loggedIn";
 export const Dropdown: FC = () => {
   const [dropdownAnchor, setDropdownAnchor] = useContext(DropdownAnchor);
   const dropdownId = useContext(DropdownId);
-  const [auth] = useContext(AuthContext);
+  const [sess] = useContext(SessionContext);
 
-  const isLoggedIn = !!auth.user;
+  const isLoggedIn = !!sess;
 
   const closeDropdown = () => setDropdownAnchor(null);
   return (

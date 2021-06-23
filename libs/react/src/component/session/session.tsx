@@ -7,7 +7,7 @@ import { UserContext, SessionContext } from "@libs/context";
 export const Session: FC = () => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [loadingToast, setLoadingToast] = useState<null | SnackbarKey>(null);
-  const [sess] = useContext(SessionContext);
+  const [sess, setSess] = useContext(SessionContext);
   const [, setUser] = useContext(UserContext);
   const [query, { loading, data, error }] = useLazyQuery(VERIFY_SESSION_SCHEMA);
   useEffect(() => {
@@ -18,11 +18,14 @@ export const Session: FC = () => {
     }
   }, [sess]);
   useEffect(() => {
-    if (data)
-      enqueueSnackbar(`logged in!`, { variant: `success` }) &&
-        setUser(data.verifySession);
-    else if (error)
-      enqueueSnackbar(error.message, { variant: `error` }) && setUser(null);
+    if (data) {
+      enqueueSnackbar(`logged in!`, { variant: `success` });
+      setUser(data.verifySession);
+    } else if (error) {
+      enqueueSnackbar(error.message, { variant: `error` });
+      setSess(``);
+      setUser(null);
+    }
   }, [data, error]);
   useEffect(() => {
     if (loading) setLoadingToast(enqueueSnackbar(`loggin in`));
