@@ -1,6 +1,5 @@
 import React, { useEffect, useContext, FC } from "react";
 import { State } from "@libs/context";
-import { LOGIN_SCHEMA } from "@libs/gql";
 import { useMutation } from "@apollo/client";
 import {
   FormControl,
@@ -15,19 +14,23 @@ import {
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { SessionContext } from "@libs/context";
+import { LOGIN_LOCAL, LoginLocalInput, LoginLocalOutput } from "@libs/gql";
 
 export const Login: FC<{ open: State<boolean> }> = ({
   open: [open, setOpen]
 }) => {
   const [, setSess] = useContext(SessionContext);
 
-  const [login, { data, error }] = useMutation(LOGIN_SCHEMA);
+  const [login, { data, error }] = useMutation<
+    LoginLocalOutput,
+    LoginLocalInput
+  >(LOGIN_LOCAL);
   const schema = yup
     .object()
     .required()
     .shape({
-      nameOrEmail: yup.string().default(``).required(),
-      password: yup.string().default(``).required()
+      name: yup.string().default(``).required(),
+      pass: yup.string().default(``).required()
     });
   const formik = useFormik({
     validationSchema: schema,
@@ -48,9 +51,8 @@ export const Login: FC<{ open: State<boolean> }> = ({
       <form>
         <DialogContent>
           <TextField
-            name="nameOrEmail"
+            name="name"
             fullWidth
-            error={!!error}
             placeholder="Username or Email"
             value={formik.values.nameOrEmail}
             type="text"
@@ -58,9 +60,8 @@ export const Login: FC<{ open: State<boolean> }> = ({
             onBlur={formik.handleBlur}
           />
           <TextField
-            name="password"
+            name="pass"
             fullWidth
-            error={!!error}
             placeholder="password"
             value={formik.values.password}
             type="password"

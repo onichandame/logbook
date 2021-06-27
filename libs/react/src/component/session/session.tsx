@@ -1,7 +1,11 @@
 import React, { FC, useState, useEffect, useContext } from "react";
+import {
+  VERIFY_SESSION,
+  VerifySessionInput,
+  VerifySessionOutput
+} from "@libs/gql";
 import { useSnackbar, SnackbarKey } from "notistack";
 import { useLazyQuery } from "@apollo/client";
-import { VERIFY_SESSION_SCHEMA } from "@libs/gql";
 import { UserContext, SessionContext } from "@libs/context";
 
 export const Session: FC = () => {
@@ -9,10 +13,13 @@ export const Session: FC = () => {
   const [loadingToast, setLoadingToast] = useState<null | SnackbarKey>(null);
   const [sess, setSess] = useContext(SessionContext);
   const [, setUser] = useContext(UserContext);
-  const [query, { loading, data, error }] = useLazyQuery(VERIFY_SESSION_SCHEMA);
+  const [query, { loading, data, error }] = useLazyQuery<
+    VerifySessionOutput,
+    VerifySessionInput
+  >(VERIFY_SESSION);
   useEffect(() => {
     if (sess) {
-      query({ variables: { session: sess } });
+      query({ variables: { sess } });
     } else {
       setUser(null);
     }

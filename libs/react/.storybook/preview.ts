@@ -1,11 +1,7 @@
 import "@storybook/addon-console";
 import { MockedProvider, MockedProviderProps } from "@apollo/client/testing";
 
-import {
-  VERIFY_SESSION_SCHEMA,
-  LOGIN_SCHEMA,
-  USER_QUERY_SCHEMA
-} from "@libs/gql";
+import { VERIFY_SESSION, LOGIN_LOCAL } from "../src";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -22,29 +18,15 @@ export const parameters = {
       mocks: [
         {
           request: {
-            query: LOGIN_SCHEMA,
-            variables: { nameOrEmail: `test`, password: `test` }
+            query: LOGIN_LOCAL,
+            variables: { name: `test`, pass: `test` }
           },
           result: { data: { session: `test` } }
         },
         {
-          request: { query: USER_QUERY_SCHEMA, variables: { id: `test` } },
-          result: {
-            data: {
-              id: `test`,
-              updatedAt: new Date(),
-              createdAt: new Date(),
-              uuid: `test`,
-              name: `test`,
-              email: `test`,
-              avatar: `test`
-            }
-          }
-        },
-        {
           request: {
-            query: VERIFY_SESSION_SCHEMA,
-            variables: { session: `test` }
+            query: VERIFY_SESSION,
+            variables: { sess: `test` }
           },
           result: {
             data: {

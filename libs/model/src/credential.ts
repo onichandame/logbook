@@ -3,7 +3,7 @@ import {
   FilterableField,
   FilterableRelation
 } from "@nestjs-query/query-graphql";
-import { ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { hash, compare } from "bcryptjs";
 
 import { Persistent } from "./base";
@@ -23,6 +23,7 @@ class Credential extends Persistent {
 @ObjectType()
 @Entity({ name: `local_credential` })
 export class LocalCredential extends Credential {
+  @Field()
   @Column()
   password!: string;
 

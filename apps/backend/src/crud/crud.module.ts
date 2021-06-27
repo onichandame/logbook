@@ -3,7 +3,12 @@ import { NestjsQueryTypeOrmModule } from "@nestjs-query/query-typeorm";
 import { Module } from "@nestjs/common";
 import { Models } from "@libs/model";
 
-import { UserCreate, UserUpdate } from "./dto";
+import {
+  UserCreate,
+  UserUpdate,
+  LocalCredentialCreate,
+  LocalCredentialUpdate
+} from "./dto";
 
 @Module({
   imports: [
@@ -20,7 +25,9 @@ import { UserCreate, UserUpdate } from "./dto";
         {
           EntityClass: Models.LocalCredential,
           DTOClass: Models.LocalCredential,
-          delete: { disabled: true }
+          delete: { disabled: true },
+          CreateDTOClass: LocalCredentialCreate,
+          UpdateDTOClass: LocalCredentialUpdate
         }
       ]
     })

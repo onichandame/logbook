@@ -1,81 +1,35 @@
-import React, { FC } from "react";
-import { useMutation } from "@apollo/client";
-import * as yup from "yup";
-import { useFormik } from "formik";
+import React, { useState, FC } from "react";
+import clamp from "lodash.clamp";
 import { State } from "@libs/context";
-import {
-  FormControl,
-  FormHelperText,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button
-} from "@material-ui/core";
+import { Stepper, Step, StepLabel, Dialog } from "@material-ui/core";
+
+import { UserForm } from "./userForm";
+import { CredForm } from "./credForm";
+import { StepRangeContext } from "./context";
 
 export const Register: FC<{ open: State<boolean> }> = ({
   open: [open, setOpen]
 }) => {
-  const schema = yup
-    .object()
-    .required()
-    .shape({
-      name: yup.string().required().label(`username`).default(``),
-      email: yup.string().email().notRequired().default(``)
-    });
-  const formik = useFormik({
-    validationSchema: schema,
-    initialValues: schema.getDefault(),
-    onSubmit: (vals, helpers) => {
-      helpers.setSubmitting(true);
-      helpers.setSubmitting(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const steps = [
+    {
+      component: <UserForm onSubmit={proceed} onClose={() => setOpen(false)} />,
+      label: `create user`
     }
-  });
+  ];
+  const [stepRange] = useState({ first: 0, last: steps.length - 1 });
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Register Yourself</DialogTitle>
-      <form>
-        <DialogContent>
-          <TextField
-            name="name"
-            fullWidth
-            placeholder="username"
-            type="text"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <TextField
-            name="email"
-            fullWidth
-            placeholder="email"
-            type="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => setOpen(false)}
-            disabled={formik.isSubmitting}
-            variant="contained"
-            color="secondary"
-          >
-            cancel
-          </Button>
-          <Button
-            onClick={async () => {
-              await formik.submitForm();
-              setOpen(false);
-            }}
-            disabled={formik.isSubmitting}
-            variant="contained"
-            color="secondary"
-          >
-            register
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+    <StepRangeContext.Provider value={stepRange}>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <Stepper activeStep={activeStep}>
+          {steps.map(step => (
+            <Step key={step.label}>{step.label}</Step>
+          ))}
+        </Stepper>
+        {steps.map(step => {
+          return step.component;
+        })}
+      </Dialog>
+    </StepRangeContext.Provider>
   );
 };

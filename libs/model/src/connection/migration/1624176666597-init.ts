@@ -7,21 +7,35 @@ export class InitMigration1624176666597 implements MigrationInterface {
         new Table({
           name: `user`,
           columns: [
-            { name: `id`, type: `init`, isPrimary: true, isGenerated: true },
+            {
+              name: `id`,
+              type: `integer`,
+              isPrimary: true,
+              isGenerated: true
+            },
             { name: `createdAt`, type: `date` },
             { name: `updatedAt`, type: `date`, isNullable: true },
             { name: `deletedAt`, type: `date`, isNullable: true },
             { name: `uuid`, type: `text`, isUnique: true },
             { name: `name`, type: `text` },
-            { name: `email`, type: `text`, isNullable: true }
+            { name: `email`, type: `text`, isNullable: true },
+            { name: `avatar`, type: `text`, isNullable: true }
           ]
         })
       ),
       query.createTable(
         new Table({
           name: `local_credential`,
+          foreignKeys: [
+            {
+              columnNames: [`userId`],
+              referencedTableName: `user`,
+              referencedColumnNames: [`id`]
+            }
+          ],
           columns: [
-            { name: `id`, type: `init`, isPrimary: true, isGenerated: true },
+            { name: `id`, type: `integer`, isPrimary: true, isGenerated: true },
+            { name: `userId`, type: `integer` },
             { name: `createdAt`, type: `date` },
             { name: `updatedAt`, type: `date`, isNullable: true },
             { name: `deletedAt`, type: `date`, isNullable: true },
