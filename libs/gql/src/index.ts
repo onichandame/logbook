@@ -22,11 +22,14 @@ export const USER_CORE = gql`
     updatedAt
   }
 `;
-export type UserCore = Models.User;
+export type UserCore = Pick<
+  Models.User,
+  "id" | "uuid" | "name" | "email" | "avatar" | "createdAt" | "updatedAt"
+>;
 
 export const VERIFY_SESSION = gql`
   ${USER_CORE}
-  query verifySession($sess: String!) {
+  query ($sess: String!) {
     verifySession(session: $sess) {
       ...UserCore
     }
@@ -60,15 +63,17 @@ export const LOCAL_CREDENTIAL = gql`
     password
   }
 `;
-export type LocalCredential = Models.LocalCredential;
+export type LocalCredential = Pick<
+  Models.LocalCredential,
+  "id" | "updatedAt" | "createdAt" | "deletedAt" | "password"
+> & { user: UserCore };
 
 export const CREATE_LOCAL_CRED = gql`
-${LOCAL_CREDENTIAL}
-mutation($user:Int!,$pass:String!){
-  createOneLocalCredential({input:{user:$user,pass:$pass}}){
-    ...LocalCredential
-  }
-
+  ${LOCAL_CREDENTIAL}
+  mutation ($user: Int!, $pass: String!) {
+    createOneLocalCredential(input: { user: $user, pass: $pass }) {
+      ...LocalCredential
+    }
   }
 `;
 export type CreateLocalCredInput = { user: number; pass: string };

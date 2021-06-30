@@ -1,9 +1,9 @@
 import React, { useState, FC, useContext } from "react";
 import clamp from "lodash.clamp";
-import { Models } from "@libs/model";
 import {
   LoginLocalInput,
   LoginLocalOutput,
+  UserCore,
   LOGIN_LOCAL,
   CreateLocalCredOutput,
   CreateLocalCredInput,
@@ -20,6 +20,7 @@ import {
   DialogActions,
   DialogContent,
   FormControl,
+  StepLabel,
   DialogTitle,
   Button,
   FormHelperText,
@@ -34,7 +35,7 @@ export const Register: FC<{ open: State<boolean> }> = ({
 }) => {
   const [, setSess] = useContext(SessionContext);
   const [activeStep, setActiveStep] = useState(0);
-  const [user, setUser] = useState<Models.User | undefined>(undefined);
+  const [user, setUser] = useState<UserCore | undefined>(undefined);
   const [createUser, createUserRes] = useMutation<
     CreateUserOutput,
     CreateUserInput
@@ -71,7 +72,7 @@ export const Register: FC<{ open: State<boolean> }> = ({
         .string()
         .oneOf([yup.ref(`password`), null], `password must match`)
     });
-  const CredFormik = useFormik({
+  const credFormik = useFormik({
     validationSchema: CredSchema,
     initialValues: CredSchema.getDefault(),
     onSubmit: async (vals, helpers) => {
@@ -87,7 +88,7 @@ export const Register: FC<{ open: State<boolean> }> = ({
   });
   const steps = [
     {
-      operation: createUser,
+      operation: UserFormik.submitForm,
       component: (
         <>
           <TextField
@@ -133,16 +134,16 @@ export const Register: FC<{ open: State<boolean> }> = ({
             fullWidth
             placeholder="new password"
             type="password"
-            onChange={CredFormik.handleChange}
-            onBlur={CredFormik.handleBlur}
+            onChange={credFormik.handleChange}
+            onBlur={credFormik.handleBlur}
           />
           <TextField
             name="confirmPass"
             fullWidth
             placeholder="confirm password"
             type="password"
-            onChange={CredFormik.handleChange}
-            onBlur={CredFormik.handleBlur}
+            onChange={credFormik.handleChange}
+            onBlur={credFormik.handleBlur}
           />
           {createCredRes.error && (
             <FormControl error>
@@ -153,34 +154,50 @@ export const Register: FC<{ open: State<boolean> }> = ({
           )}
         </>
       ),
-      operation: createCred,
-      label: `create password`
+      operation: credFormik.submitForm,
+      label: `create password`,
+      message: `you will not be able to use the new account if password is not created!`
     }
   ];
 
   const proceed = () =>
     setActiveStep(clamp(activeStep + 1, 0, steps.length - 1));
-  const cancel = () => {};
+  const cancel = () => {
+    setOpen(false);
+  };
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog open={open} onClose={cancel}>
       <DialogTitle>
+        Create New User
         <Stepper activeStep={activeStep}>
           {steps.map(step => (
-            <Step key={step.label}>{step.label}</Step>
+            <Step key={step.label.split(` `).join()}>
+              <StepLabel>{step.label}</StepLabel>
+            </Step>
           ))}
         </Stepper>
+        {steps[activeStep].message ? (
+          <FormControl>
+            <FormHelperText>{steps[activeStep].message}</FormHelperText>
+          </FormControl>
+        ) : (
+          ``
+        )}
       </DialogTitle>
-      <DialogContent>
-        {steps.map(step => {
-          return step.component;
-        })}
-      </DialogContent>
+      <DialogContent>{steps[activeStep].component}</DialogContent>
       <DialogActions>
         <Button variant="contained" color="secondary" onClick={cancel}>
           cancel
         </Button>
-        <Button variant="contained" color="primary" onClick={proceed}>
-          next
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={async () => {
+            await steps[activeStep].operation();
+            activeStep < steps.length ? proceed() : cancel();
+          }}
+        >
+          {activeStep === steps.length - 1 ? `finish` : `next`}
         </Button>
       </DialogActions>
     </Dialog>
